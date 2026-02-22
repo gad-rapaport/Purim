@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דמי פורים - המתכנת במסכה</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&family=Fira+Code:wght@500&display=swap');
+
+        :root {
+            --primary-glow: #00ffcc;
+            --secondary-glow: #7000ff;
+            --bg-dark: #050505;
+            --card-bg: rgba(15, 15, 20, 0.6);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        /* רקע מונפש למראה סייבר מתקדם */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Heebo', sans-serif;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #050505, #0a192f);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .container {
+            max-width: 550px;
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 45px 35px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 
+                        inset 0 0 0 1px rgba(255,255,255,0.05);
+            text-align: center;
+            animation: float 6s ease-in-out infinite;
+            position: relative;
+        }
+
+        /* פס תאורה עליון לכרטיס */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-glow), transparent);
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin: 0 0 10px 0;
+            background: linear-gradient(to right, #ffffff, var(--primary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.1rem;
+            color: var(--primary-glow);
+            margin-bottom: 35px;
+            direction: ltr;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+        }
+
+        .pitch-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: right;
+            border-right: 3px solid var(--secondary-glow);
+            margin-bottom: 35px;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .pitch-section:hover {
+            transform: scale(1.02);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .pitch-section h3 {
+            margin-top: 0;
+            color: #fff;
+            font-size: 1.4rem;
+        }
+
+        .pitch-section p {
+            margin-bottom: 15px;
+            color: var(--text-muted);
+        }
+
+        .highlight {
+            color: #fff;
+            font-weight: bold;
+            background: linear-gradient(120deg, rgba(112,0,255,0.2) 0%, rgba(0,255,204,0.2) 100%);
+            padding: 0 5px;
+            border-radius: 4px;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* אפקט ברק על הכפתורים */
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%; bottom: -50%; left: -50%;
+            background: linear-gradient(to bottom, rgba(229, 252, 255, 0), rgba(255,255,255,0.2) 50%, rgba(229, 252, 255, 0));
+            transform: rotateZ(60deg) translate(-5em, 7.5em);
+            z-index: -1;
+            transition: transform 0.5s ease-out;
+        }
+
+        .btn:hover::after {
+            transform: rotateZ(60deg) translate(1em, -9em);
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-paypal { 
+            background: linear-gradient(135deg, #003087 0%, #0079C1 100%);
+            box-shadow: 0 10px 20px rgba(0, 121, 193, 0.2);
+        }
+        
+        .btn-whatsapp { 
+            background: linear-gradient(135deg, #128C7E 0%, #25D366 100%);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 2.2rem; }
+            .container { padding: 30px 20px; }
+            .pitch-section { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>המתכנת במסכה 🎭</h1>
+            <p class="subtitle">> return "Chag Purim Sameach";</p>
+        </header>
+
+        <section class="pitch-section">
+            <h3>אז איך אני יכול לעזור לכם? 💻</h3>
+            <p>תראו, אני מפתח אתרים ומרים שרתי DevOps. בניגוד לכלכלה או לבאגים שלכם בחיים – <span class="highlight">הקוד שלי לא קורס.</span></p>
+            <p>הגעתם לכאן כי הסתקרנתם מהקוד שעל החולצה שלי. העובדה שסרקתם מוכיחה שחוויית המשתמש שלי עובדת מושלם. אם אתם מחפשים מתכנת שיבנה לכם אתר ברמה הזאת – הגעתם למקום הנכון.</p>
+            <p><strong style="color: #fff;">אז תשאירו דמי פורים לאות הערכה, או פשוט תשלחו לי הודעה ונתחיל לעבוד יחד.</strong></p>
+        </section>
+
+        <section class="actions">
+            <a href="https://paypal.me/YOUR_LINK" class="btn btn-paypal" target="_blank">תנו דמי פורים (PayPal) 💸</a>
+            
+            <a href="https://wa.me/972559297328?text=היי,%20איזה%20רעיון%20מקורי!%20אשמח%20להזמין%20אצלך%20גם%20אתר." class="btn btn-whatsapp" target="_blank">בואו נדבר על האתר שלכם 📱</a>
+        </section>
+    </div>
+</body>
+</html>
