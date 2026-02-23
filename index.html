@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>דמי פורים - המתכנת במסכה</title>
+    <title>המתכנת במסכה</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;500;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap');
 
         :root {
-            --glass-bg: rgba(20, 25, 40, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-            --text-main: #ffffff;
-            --text-muted: #cbd5e1;
+            /* פלטת צבעים יוקרתית ועמוקה */
+            --bg-deep: #0a0e17;
+            --glass-bg: rgba(30, 35, 50, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f0f2f5;
+            --text-muted: #a0aec0;
+            --accent-cyan: #00cec9;
+            --accent-purple: #6c5ce7;
         }
 
         body {
@@ -23,138 +26,168 @@
             justify-content: center;
             align-items: center;
             font-family: 'Heebo', sans-serif;
-            background-color: #05050a; /* רקע שחור עמוק */
+            background-color: var(--bg-deep);
             color: var(--text-main);
-            overflow: hidden; /* מסתיר את הבועות שיוצאות מהמסך */
+            overflow: hidden;
             position: relative;
         }
 
-        /* === בועות נוזליות מונפשות ברקע === */
+        /* === בועות נוזליות יוקרתיות ברקע === */
         .liquid-blob {
             position: absolute;
-            filter: blur(60px);
+            filter: blur(70px);
             z-index: -1;
-            opacity: 0.7;
-            animation: morphAndMove 15s infinite alternate ease-in-out;
+            opacity: 0.5;
+            animation: move 18s infinite alternate ease-in-out;
         }
 
         .blob-1 {
-            top: 10%; left: 10%;
-            width: 350px; height: 350px;
-            background: linear-gradient(135deg, #ff007a, #7000ff);
+            top: 5%; left: 15%;
+            width: 400px; height: 400px;
+            background: linear-gradient(135deg, #090979, #00d4ff);
             border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
         }
 
         .blob-2 {
-            bottom: 10%; right: 10%;
-            width: 400px; height: 400px;
-            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            bottom: 15%; right: 10%;
+            width: 350px; height: 350px;
+            background: linear-gradient(135deg, #4a00e0, #8e2de2);
             border-radius: 60% 40% 30% 70% / 50% 60% 40% 40%;
-            animation-duration: 18s;
-            animation-delay: -5s;
+            animation-duration: 22s;
+            animation-delay: -3s;
         }
 
         .blob-3 {
-            top: 40%; left: 50%;
-            width: 250px; height: 250px;
-            background: linear-gradient(135deg, #fceabb, #f8b500);
+            bottom: -10%; left: 30%;
+            width: 300px; height: 300px;
+            background: linear-gradient(135deg, #006064, #00cec9);
             border-radius: 50% 50% 30% 70% / 50% 50% 60% 40%;
-            animation-duration: 20s;
-            animation-delay: -10s;
-            opacity: 0.4;
+            animation-duration: 25s;
+            opacity: 0.3;
         }
 
-        @keyframes morphAndMove {
-            0% { transform: translate(0, 0) rotate(0deg) scale(1); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
-            50% { transform: translate(30px, -50px) rotate(90deg) scale(1.1); border-radius: 60% 40% 30% 70% / 50% 60% 40% 40%; }
-            100% { transform: translate(-40px, 30px) rotate(180deg) scale(0.9); border-radius: 50% 50% 30% 70% / 50% 50% 60% 40%; }
+        @keyframes move {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            50% { transform: translate(40px, -30px) rotate(45deg) scale(1.05); }
+            100% { transform: translate(-30px, 50px) rotate(90deg) scale(0.95); }
         }
 
-        /* === כרטיס הזכוכית (Glassmorphism) === */
+        /* === כרטיס הזכוכית המלוטש === */
         .glass-panel {
-            max-width: 500px;
+            max-width: 480px;
             width: 100%;
             background: var(--glass-bg);
-            backdrop-filter: blur(24px); /* האפקט שיוצר את הזכוכית */
-            -webkit-backdrop-filter: blur(24px);
-            padding: 40px;
-            border-radius: 24px;
+            backdrop-filter: blur(30px) saturate(120%); /* טשטוש חזק יותר ורוויה למראה עשיר */
+            -webkit-backdrop-filter: blur(30px) saturate(120%);
+            padding: 45px 40px;
+            border-radius: 30px;
             border: 1px solid var(--glass-border);
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
-            border-left: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: var(--glass-shadow);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.05);
             text-align: center;
             position: relative;
             z-index: 10;
         }
 
         header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin: 0 0 5px 0;
-            letter-spacing: -1px;
+            font-size: 2.6rem;
+            font-weight: 900;
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #fff, #a0aec0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .subtitle {
-            font-size: 1.1rem;
-            color: #4facfe;
-            margin-bottom: 30px;
-            font-weight: 500;
+            font-size: 1.15rem;
+            color: var(--accent-cyan);
+            margin-bottom: 35px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
         }
 
         .pitch {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             line-height: 1.7;
             color: var(--text-muted);
-            margin-bottom: 35px;
+            margin-bottom: 40px;
             text-align: right;
+            font-weight: 300;
+        }
+
+        .pitch p {
+            margin-bottom: 15px;
         }
 
         .highlight {
-            color: #fff;
-            font-weight: 800;
-            border-bottom: 2px solid #ff007a;
+            color: var(--text-main);
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 2px; left: 0; right: 0;
+            height: 6px;
+            background: rgba(108, 92, 231, 0.4); /* סגול עדין */
+            z-index: -1;
+            border-radius: 4px;
         }
 
-        /* === כפתורי זכוכית === */
+        /* === כפתורים עגולים (Pill Buttons) === */
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
         .btn {
-            display: block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
             padding: 16px;
-            margin-bottom: 15px;
-            border-radius: 12px;
+            border-radius: 50px; /* צורה עגולה מלאה */
             text-decoration: none;
             color: white;
-            font-weight: 800;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
+            font-weight: 700;
+            font-size: 1.15rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-sizing: border-box;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
+        /* גרדיאנטים עדינים ויוקרתיים לכפתורים */
         .btn-paypal {
-            border-left: 4px solid #0079C1;
+            background: linear-gradient(135deg, rgba(0, 48, 135, 0.8), rgba(0, 121, 193, 0.8));
         }
 
         .btn-whatsapp {
-            border-left: 4px solid #25D366;
-            margin-bottom: 0;
+            background: linear-gradient(135deg, rgba(18, 140, 126, 0.8), rgba(37, 211, 102, 0.8));
+        }
+        
+        /* אייקונים קטנים ליד הטקסט בכפתור */
+        .btn span {
+            margin-right: 8px;
+            font-size: 1.3rem;
         }
 
         @media (max-width: 480px) {
-            .glass-panel { padding: 30px 20px; }
-            header h1 { font-size: 2rem; }
-            .pitch { font-size: 1rem; }
-            .liquid-blob { filter: blur(40px); }
+            .glass-panel { padding: 35px 25px; }
+            header h1 { font-size: 2.2rem; }
+            .pitch { font-size: 1.05rem; }
+            .liquid-blob { filter: blur(50px); opacity: 0.4; }
         }
     </style>
 </head>
@@ -171,15 +204,19 @@
         </header>
 
         <div class="pitch">
-            <p>תראו, בניגוד לכלכלה, לשרתים שלכם או לבאגים בחיים – <span class="highlight">הקוד שלי לא קורס.</span></p>
-            <p>הגעתם לכאן כי הסתקרנתם מהקוד שעל החולצה. סרקתם? יופי. עכשיו תורכם לעשות Commit ולשלוח דמי פורים לאות הערכה.</p>
-            <p>מחפשים מתכנת שיבנה לכם אתר (או יתקן את הפאשלות של הקודם)? השאירו טיפ ותשלחו הודעה.</p>
+            <p>בניגוד לשרתים שלכם, או לכלכלה, או לניסיונות השידוכים שלכם – <span class="highlight">הקוד שלי לא קורס.</span></p>
+            <p>הגעתם לכאן כי הסתקרנתם מהחולצה. יופי. משפך השיווק עבד. עכשיו תעשו Commit ותשלחו דמי פורים לאות הערכה.</p>
+            <p>מחפשים מתכנת שיבנה לכם אתר ברמה הזאת? תשאירו טיפ, ושלחו הודעה.</p>
         </div>
 
         <div class="actions">
-            <a href="https://paypal.me/YOUR_LINK" class="btn btn-paypal" target="_blank">💸 העבר דמי פורים</a>
+            <a href="https://paypal.me/YOUR_LINK" class="btn btn-paypal" target="_blank">
+                <span>💸</span> העבר דמי פורים
+            </a>
             
-            <a href="https://wa.me/972559297328?text=היי,%20איזה%20רעיון%20מקורי!%20אשמח%20להזמין%20אצלך%20גם%20אתר." class="btn btn-whatsapp" target="_blank">📱 בואו נדבר על האתר שלכם</a>
+            <a href="https://wa.me/972559297328?text=היי,%20איזה%20רעיון%20מקורי!%20אשמח%20להזמין%20אצלך%20גם%20אתר." class="btn btn-whatsapp" target="_blank">
+                <span>📱</span> בואו נדבר על האתר שלכם
+            </a>
         </div>
     </div>
 
