@@ -2,244 +2,301 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>המתכנת במסכה</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>המתכנת במסכה | חג פורים</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@500&display=swap');
 
         :root {
-            --bg-base: #030712;
-            --glass-bg: rgba(17, 24, 39, 0.4);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --bg-dark: #070714;
+            --purple-glow: #9b51e0;
+            --purple-light: #d693ff;
+            --text-main: #ffffff;
+            --text-muted: #8b8b9e;
         }
 
-        body, html {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Heebo', sans-serif;
-            background-color: var(--bg-base);
+        }
+
+        body {
+            background-color: var(--bg-dark);
             color: var(--text-main);
+            font-family: 'Heebo', sans-serif;
+            min-height: 100vh;
             overflow-x: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* === בועות הרקע - אפקט Figma אמיתי === */
-        .ambient-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.6;
-            z-index: 0;
-            animation: floatBlob 20s infinite alternate ease-in-out;
-            pointer-events: none;
-        }
-
-        .blob-purple {
-            top: -10%; left: -10%;
-            width: 50vw; height: 50vw;
-            max-width: 400px; max-height: 400px;
-            background: #4f46e5;
-        }
-
-        .blob-cyan {
-            bottom: -10%; right: -10%;
-            width: 60vw; height: 60vw;
-            max-width: 500px; max-height: 500px;
-            background: #06b6d4;
-            animation-delay: -5s;
-        }
-
-        @keyframes floatBlob {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(10vw, 5vh) scale(1.1); }
-            100% { transform: translate(-5vw, 10vh) scale(0.9); }
-        }
-
-        /* === הילה עוקבת עכבר/אצבע === */
-        #cursor-glow {
+        /* === רקע החלל והכוכבים === */
+        .stars {
             position: fixed;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            transition: width 0.3s, height 0.3s;
-            mix-blend-mode: screen;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 0;
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.6), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.4), rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.5;
         }
 
-        /* === כרטיס הזכוכית === */
-        .glass-card {
-            width: 90%;
-            max-width: 420px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            border-left: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 28px;
-            padding: 2.5rem 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        /* === ההילה הסגולה מלמעלה (כמו בתמונה) === */
+        .eclipse-glow {
+            position: absolute;
+            top: -250px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 400px;
+            background: radial-gradient(ellipse at center, var(--purple-light) 0%, var(--purple-glow) 30%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.4;
+            z-index: 0;
+            filter: blur(40px);
+        }
+
+        .eclipse-core {
+            position: absolute;
+            top: -300px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 350px;
+            background: #000;
+            border-radius: 50%;
+            box-shadow: 0 100px 100px rgba(155, 81, 224, 0.8);
+            z-index: 1;
+        }
+
+        /* === פריסת האתר === */
+        .main-container {
             position: relative;
             z-index: 10;
-            text-align: center;
-            box-sizing: border-box;
+            max-width: 1200px;
+            width: 100%;
+            padding: 40px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
         }
 
-        header h1 {
-            font-size: 2.2rem;
-            font-weight: 900;
-            margin: 0 0 0.5rem 0;
-            letter-spacing: -0.02em;
+        /* === צד ימין: תוכן הטקסט === */
+        .content-section {
+            flex: 1;
+            max-width: 550px;
         }
 
-        .subtitle {
-            font-size: 1rem;
-            color: #38bdf8;
-            margin-bottom: 2rem;
-            font-weight: 400;
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(155, 81, 224, 0.1);
+            border: 1px solid rgba(155, 81, 224, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--purple-light);
+            margin-bottom: 25px;
+            font-family: 'Fira Code', monospace;
+            letter-spacing: 1px;
             direction: ltr;
-            opacity: 0.9;
         }
 
-        .content {
-            font-size: 1.05rem;
-            line-height: 1.6;
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        h1 span {
+            background: linear-gradient(to right, var(--purple-light), #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.description {
+            font-size: 1.1rem;
+            line-height: 1.8;
             color: var(--text-muted);
-            margin-bottom: 2.5rem;
+            margin-bottom: 35px;
             font-weight: 300;
         }
 
-        .content p { margin: 0 0 1rem 0; }
-        
-        .highlight {
-            color: #fff;
-            font-weight: 700;
-            box-shadow: inset 0 -4px 0 rgba(56, 189, 248, 0.4);
-        }
-
-        /* === כפתורים מותאמי מובייל === */
+        /* כפתורים מסוגננים */
         .btn-group {
             display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            gap: 15px;
         }
 
         .btn {
-            display: flex;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            min-height: 56px; /* גובה מושלם לאצבע במובייל */
-            border-radius: 16px; /* מעוגל אבל מודרני */
-            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--purple-glow), #4a00e0);
             color: white;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: transform 0.2s, background 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            border: none;
+            box-shadow: 0 10px 20px rgba(155, 81, 224, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 15px 30px rgba(155, 81, 224, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--purple-light);
+            background: rgba(155, 81, 224, 0.05);
+        }
+
+        /* === צד שמאל: הרדאר והאייקונים (כמו בתמונה) === */
+        .visual-section {
+            flex: 1;
             position: relative;
-            overflow: hidden;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            direction: ltr; /* שומר על הקוד משמאל לימין */
         }
 
-        .btn:active {
-            transform: scale(0.97);
+        /* מעגלי הרדאר */
+        .radar {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .btn-paypal {
-            background: linear-gradient(135deg, rgba(0, 48, 135, 0.8) 0%, rgba(0, 121, 193, 0.8) 100%);
-            box-shadow: 0 8px 20px rgba(0, 121, 193, 0.2);
+        .radar-1 { width: 450px; height: 450px; }
+        .radar-2 { width: 300px; height: 300px; }
+        .radar-3 { width: 150px; height: 150px; border: 1px dashed rgba(155, 81, 224, 0.3); }
+
+        /* קווי שתי וערב ברדאר */
+        .crosshair-x, .crosshair-y {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .crosshair-x { width: 450px; height: 1px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .crosshair-y { width: 1px; height: 450px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        /* האייקונים המרחפים */
+        .tech-icon {
+            position: absolute;
+            background: rgba(20, 20, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Fira Code', monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            cursor: default;
         }
 
-        .btn-whatsapp {
-            background: linear-gradient(135deg, rgba(21, 128, 61, 0.8) 0%, rgba(34, 197, 94, 0.8) 100%);
-            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.2);
+        .tech-icon:hover {
+            transform: scale(1.1);
+            border-color: var(--purple-glow);
+            z-index: 20;
         }
 
-        .icon {
-            margin-right: 10px;
-            font-size: 1.3rem;
-        }
+        /* מיקומים אקראיים יפים על הרדאר */
+        .icon-js { top: 15%; right: 20%; font-size: 1.5rem; }
+        .icon-py { bottom: 25%; left: 20%; color: #ffd43b; }
+        .icon-devops { top: 30%; left: 10%; }
+        .icon-aws { bottom: 15%; right: 25%; }
+        .icon-code { top: 45%; right: 5%; color: var(--purple-light); }
+        .icon-ts { bottom: 40%; right: 40%; font-size: 1.3rem; }
 
-        /* התאמות מיוחדות למסכים ממש קטנים */
-        @media (max-width: 380px) {
-            .glass-card { padding: 2rem 1.5rem; }
-            header h1 { font-size: 1.9rem; }
-            .content { font-size: 0.95rem; }
+        /* === התאמה למובייל (רספונסיביות) === */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 80px;
+            }
+            
+            .badge { margin: 0 auto 25px auto; display: inline-flex; }
+            h1 { font-size: 2.5rem; }
+            .btn-group { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
+            
+            .visual-section {
+                width: 100%;
+                height: 350px;
+                transform: scale(0.8);
+                margin-top: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div id="cursor-glow"></div>
+    <div class="stars"></div>
+    <div class="eclipse-glow"></div>
+    <div class="eclipse-core"></div>
 
-    <div class="ambient-blob blob-purple"></div>
-    <div class="ambient-blob blob-cyan"></div>
-
-    <div class="glass-card">
-        <header>
-            <h1>המתכנת במסכה 🎭</h1>
-            <p class="subtitle">System.out.println("Ad D'lo Yada");</p>
-        </header>
-
-        <div class="content">
-            <p>בניגוד לשרתים שלכם, או לכלכלה, או לניסיונות השידוכים שלכם – <span class="highlight">הקוד שלי לא קורס.</span></p>
-            <p>סרקתם? משפך השיווק עבד. עכשיו תעשו Commit ותשלחו דמי פורים לאות הערכה.</p>
-            <p>מחפשים מתכנת שיבנה לכם אתר ברמה הזאת? תשאירו טיפ, ושלחו הודעה.</p>
-        </div>
-
-        <div class="btn-group">
-            <a href="https://paypal.me/YOUR_LINK" class="btn btn-paypal" target="_blank">
-                <span class="icon">💸</span> העבר דמי פורים
-            </a>
+    <div class="main-container">
+        
+        <div class="content-section">
+            <div class="badge">✨ Masked Developer Portfolio</div>
             
-            <a href="https://wa.me/972559297328?text=היי,%20איזה%20רעיון%20מקורי!%20אשמח%20להזמין%20אצלך%20גם%20אתר." class="btn btn-whatsapp" target="_blank">
-                <span class="icon">📱</span> בואו נדבר על האתר
-            </a>
+            <h1>Providing <span>the best</span><br>code experience.</h1>
+            
+            <p class="description">
+                בניגוד לשרתים שלכם, או לניסיונות השידוכים שלכם – <strong>הקוד שלי לא קורס.</strong><br><br>
+                הגעתם לכאן כי סקרן אתכם הברקוד על החולצה. משפך המכירות שלי עבד, עכשיו תורכם לבצע Commit ולשלוח דמי פורים לאות הערכה.
+            </p>
+            
+            <div class="btn-group">
+                <a href="https://paypal.me/YOUR_LINK" target="_blank" class="btn btn-primary">Pay Dmei Purim</a>
+                <a href="https://wa.me/972559297328?text=היי,%20סרקתי%20את%20החולצה.%20האתר%20שלך%20נראה%20מטורף!" target="_blank" class="btn btn-outline">Let's Talk Code</a>
+            </div>
         </div>
+
+        <div class="visual-section">
+            <div class="radar radar-1"></div>
+            <div class="radar radar-2"></div>
+            <div class="radar radar-3"></div>
+            <div class="crosshair-x"></div>
+            <div class="crosshair-y"></div>
+
+            <div class="tech-icon icon-js">JS</div>
+            <div class="tech-icon icon-py">Python</div>
+            <div class="tech-icon icon-devops">DevOps</div>
+            <div class="tech-icon icon-aws">AWS</div>
+            <div class="tech-icon icon-code">&lt;/&gt;</div>
+            <div class="tech-icon icon-ts">TS</div>
+        </div>
+
     </div>
 
-    <script>
-        // קוד יעיל במיוחד שעוקב אחרי מגע בנייד או עכבר במחשב בלי להעמיס על הדפדפן
-        const glow = document.getElementById('cursor-glow');
-        let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-
-        // עדכון מיקום עכבר במחשב
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        // עדכון מיקום אצבע בנייד
-        window.addEventListener('touchmove', (e) => {
-            mouseX = e.touches[0].clientX;
-            mouseY = e.touches[0].clientY;
-        });
-
-        // שימוש ב-requestAnimationFrame לאנימציה חלקה לגמרי (60fps)
-        function animateGlow() {
-            // הוספתי Lerp (אינטרפולציה לינארית) כדי שהאור יעקוב ברכות ולא יקפוץ
-            const currentX = parseFloat(glow.style.left || window.innerWidth / 2);
-            const currentY = parseFloat(glow.style.top || window.innerHeight / 2);
-            
-            glow.style.left = currentX + (mouseX - currentX) * 0.15 + 'px';
-            glow.style.top = currentY + (mouseY - currentY) * 0.15 + 'px';
-            
-            requestAnimationFrame(animateGlow);
-        }
-
-        animateGlow();
-    </script>
 </body>
 </html>
