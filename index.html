@@ -2,317 +2,244 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>המתכנת במסכה</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap');
 
         :root {
-            --bg-deep: #0a0e17;
-            --glass-bg: rgba(30, 35, 50, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-main: #f0f2f5;
-            --text-muted: #a0aec0;
-            --accent-cyan: #00cec9;
+            --bg-base: #030712;
+            --glass-bg: rgba(17, 24, 39, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
         }
 
-        body {
+        body, html {
             margin: 0;
-            padding: 20px;
-            min-height: 100vh;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Heebo', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            overflow-x: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Heebo', sans-serif;
-            background-color: var(--bg-deep);
-            color: var(--text-main);
-            overflow: hidden;
             position: relative;
         }
 
-        /* קנבס האנימציה שיושב מאחורה */
-        #bg-canvas {
+        /* === בועות הרקע - אפקט Figma אמיתי === */
+        .ambient-blob {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.6;
             z-index: 0;
+            animation: floatBlob 20s infinite alternate ease-in-out;
+            pointer-events: none;
         }
 
-        /* כרטיס הזכוכית המלוטש */
-        .glass-panel {
-            max-width: 480px;
-            width: 100%;
+        .blob-purple {
+            top: -10%; left: -10%;
+            width: 50vw; height: 50vw;
+            max-width: 400px; max-height: 400px;
+            background: #4f46e5;
+        }
+
+        .blob-cyan {
+            bottom: -10%; right: -10%;
+            width: 60vw; height: 60vw;
+            max-width: 500px; max-height: 500px;
+            background: #06b6d4;
+            animation-delay: -5s;
+        }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(10vw, 5vh) scale(1.1); }
+            100% { transform: translate(-5vw, 10vh) scale(0.9); }
+        }
+
+        /* === הילה עוקבת עכבר/אצבע === */
+        #cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            transition: width 0.3s, height 0.3s;
+            mix-blend-mode: screen;
+        }
+
+        /* === כרטיס הזכוכית === */
+        .glass-card {
+            width: 90%;
+            max-width: 420px;
             background: var(--glass-bg);
-            backdrop-filter: blur(25px) saturate(120%);
-            -webkit-backdrop-filter: blur(25px) saturate(120%);
-            padding: 45px 40px;
-            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05);
-            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 28px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             position: relative;
             z-index: 10;
+            text-align: center;
+            box-sizing: border-box;
         }
 
         header h1 {
-            font-size: 2.6rem;
+            font-size: 2.2rem;
             font-weight: 900;
-            margin: 0 0 10px 0;
-            background: linear-gradient(to right, #fff, #a0aec0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin: 0 0 0.5rem 0;
+            letter-spacing: -0.02em;
         }
 
         .subtitle {
-            font-size: 1.15rem;
-            color: var(--accent-cyan);
-            margin-bottom: 35px;
+            font-size: 1rem;
+            color: #38bdf8;
+            margin-bottom: 2rem;
             font-weight: 400;
             direction: ltr;
+            opacity: 0.9;
         }
 
-        .pitch {
-            font-size: 1.1rem;
-            line-height: 1.7;
+        .content {
+            font-size: 1.05rem;
+            line-height: 1.6;
             color: var(--text-muted);
-            margin-bottom: 40px;
-            text-align: right;
+            margin-bottom: 2.5rem;
             font-weight: 300;
         }
 
-        .pitch p { margin-bottom: 15px; }
-
-        .highlight {
-            color: var(--text-main);
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-        }
+        .content p { margin: 0 0 1rem 0; }
         
-        .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: 2px; left: 0; right: 0;
-            height: 6px;
-            background: rgba(108, 92, 231, 0.4);
-            z-index: -1;
-            border-radius: 4px;
+        .highlight {
+            color: #fff;
+            font-weight: 700;
+            box-shadow: inset 0 -4px 0 rgba(56, 189, 248, 0.4);
         }
 
-        .actions {
+        /* === כפתורים מותאמי מובייל === */
+        .btn-group {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 1rem;
         }
 
         .btn {
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             width: 100%;
-            padding: 16px;
-            border-radius: 50px;
+            min-height: 56px; /* גובה מושלם לאצבע במובייל */
+            border-radius: 16px; /* מעוגל אבל מודרני */
             text-decoration: none;
             color: white;
             font-weight: 700;
-            font-size: 1.15rem;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
+            font-size: 1.1rem;
+            transition: transform 0.2s, background 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn:hover {
-            transform: translateY(-3px) scale(1.01);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 255, 255, 0.3);
+        .btn:active {
+            transform: scale(0.97);
         }
 
         .btn-paypal {
-            background: linear-gradient(135deg, rgba(0, 48, 135, 0.8), rgba(0, 121, 193, 0.8));
+            background: linear-gradient(135deg, rgba(0, 48, 135, 0.8) 0%, rgba(0, 121, 193, 0.8) 100%);
+            box-shadow: 0 8px 20px rgba(0, 121, 193, 0.2);
         }
 
         .btn-whatsapp {
-            background: linear-gradient(135deg, rgba(18, 140, 126, 0.8), rgba(37, 211, 102, 0.8));
+            background: linear-gradient(135deg, rgba(21, 128, 61, 0.8) 0%, rgba(34, 197, 94, 0.8) 100%);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.2);
         }
-        
-        .btn span {
-            margin-right: 8px;
+
+        .icon {
+            margin-right: 10px;
             font-size: 1.3rem;
         }
 
-        @media (max-width: 480px) {
-            .glass-panel { padding: 35px 25px; }
-            header h1 { font-size: 2.2rem; }
-            .pitch { font-size: 1.05rem; }
+        /* התאמות מיוחדות למסכים ממש קטנים */
+        @media (max-width: 380px) {
+            .glass-card { padding: 2rem 1.5rem; }
+            header h1 { font-size: 1.9rem; }
+            .content { font-size: 0.95rem; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
+    <div id="cursor-glow"></div>
 
-    <div class="glass-panel">
+    <div class="ambient-blob blob-purple"></div>
+    <div class="ambient-blob blob-cyan"></div>
+
+    <div class="glass-card">
         <header>
             <h1>המתכנת במסכה 🎭</h1>
-            <p class="subtitle">> System.out.println("Ad D'lo Yada");</p>
+            <p class="subtitle">System.out.println("Ad D'lo Yada");</p>
         </header>
 
-        <div class="pitch">
+        <div class="content">
             <p>בניגוד לשרתים שלכם, או לכלכלה, או לניסיונות השידוכים שלכם – <span class="highlight">הקוד שלי לא קורס.</span></p>
-            <p>הגעתם לכאן כי הסתקרנתם מהחולצה. יופי. משפך השיווק עבד. עכשיו תעשו Commit ותשלחו דמי פורים לאות הערכה.</p>
+            <p>סרקתם? משפך השיווק עבד. עכשיו תעשו Commit ותשלחו דמי פורים לאות הערכה.</p>
             <p>מחפשים מתכנת שיבנה לכם אתר ברמה הזאת? תשאירו טיפ, ושלחו הודעה.</p>
         </div>
 
-        <div class="actions">
+        <div class="btn-group">
             <a href="https://paypal.me/YOUR_LINK" class="btn btn-paypal" target="_blank">
-                <span>💸</span> העבר דמי פורים
+                <span class="icon">💸</span> העבר דמי פורים
             </a>
             
             <a href="https://wa.me/972559297328?text=היי,%20איזה%20רעיון%20מקורי!%20אשמח%20להזמין%20אצלך%20גם%20אתר." class="btn btn-whatsapp" target="_blank">
-                <span>📱</span> בואו נדבר על האתר שלכם
+                <span class="icon">📱</span> בואו נדבר על האתר
             </a>
         </div>
     </div>
 
     <script>
-        // אלגוריתם אנימציית קנבס: עוקב אחרי העכבר ויוצר רשת רקע
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        // קוד יעיל במיוחד שעוקב אחרי מגע בנייד או עכבר במחשב בלי להעמיס על הדפדפן
+        const glow = document.getElementById('cursor-glow');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
 
-        let particlesArray = [];
-        let trailArray = [];
-        
-        let mouse = {
-            x: null,
-            y: null,
-            radius: 150
-        }
-
-        window.addEventListener('mousemove', function(event) {
-            mouse.x = event.x;
-            mouse.y = event.y;
-            // יצירת שובל של חלקיקים אחרי העכבר
-            for(let i=0; i<2; i++){
-                trailArray.push(new Trail(mouse.x, mouse.y));
-            }
+        // עדכון מיקום עכבר במחשב
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
 
-        // תמיכה גם במסכי מגע (טלפונים)
-        window.addEventListener('touchmove', function(event) {
-            mouse.x = event.touches[0].clientX;
-            mouse.y = event.touches[0].clientY;
-            for(let i=0; i<2; i++){
-                trailArray.push(new Trail(mouse.x, mouse.y));
-            }
+        // עדכון מיקום אצבע בנייד
+        window.addEventListener('touchmove', (e) => {
+            mouseX = e.touches[0].clientX;
+            mouseY = e.touches[0].clientY;
         });
 
-        window.addEventListener('resize', function() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
-        });
-
-        // מחלקה עבור חלקיקי הרקע (הרשת)
-        class Particle {
-            constructor(x, y, directionX, directionY, size, color) {
-                this.x = x;
-                this.y = y;
-                this.directionX = directionX;
-                this.directionY = directionY;
-                this.size = size;
-                this.color = color;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = '#6c5ce7'; // סגול יוקרתי לנקודות
-                ctx.fill();
-            }
-            update() {
-                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
-                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
-                this.x += this.directionX;
-                this.y += this.directionY;
-                this.draw();
-            }
+        // שימוש ב-requestAnimationFrame לאנימציה חלקה לגמרי (60fps)
+        function animateGlow() {
+            // הוספתי Lerp (אינטרפולציה לינארית) כדי שהאור יעקוב ברכות ולא יקפוץ
+            const currentX = parseFloat(glow.style.left || window.innerWidth / 2);
+            const currentY = parseFloat(glow.style.top || window.innerHeight / 2);
+            
+            glow.style.left = currentX + (mouseX - currentX) * 0.15 + 'px';
+            glow.style.top = currentY + (mouseY - currentY) * 0.15 + 'px';
+            
+            requestAnimationFrame(animateGlow);
         }
 
-        // מחלקה עבור שובל העכבר (האנימציה שעוקבת)
-        class Trail {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 4 + 1;
-                this.speedX = Math.random() * 2 - 1;
-                this.speedY = Math.random() * 2 - 1;
-                this.color = '#00cec9'; // ציאן-טורקיז עדין
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.size > 0.1) this.size -= 0.1;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function init() {
-            particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 12000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                let size = (Math.random() * 1.5) + 1;
-                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                let directionX = (Math.random() * 1) - 0.5;
-                let directionY = (Math.random() * 1) - 0.5;
-                particlesArray.push(new Particle(x, y, directionX, directionY, size, '#8e44ad'));
-            }
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, innerWidth, innerHeight);
-
-            // עדכון רשת הרקע וחיבור בקווים
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                for (let j = i; j < particlesArray.length; j++) {
-                    let distance = ((particlesArray[i].x - particlesArray[j].x) * (particlesArray[i].x - particlesArray[j].x))
-                                 + ((particlesArray[i].y - particlesArray[j].y) * (particlesArray[i].y - particlesArray[j].y));
-                    if (distance < (canvas.width / 7) * (canvas.height / 7)) {
-                        let opacityValue = 1 - (distance / 20000);
-                        ctx.strokeStyle = 'rgba(108, 92, 231,' + opacityValue + ')';
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
-                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            // עדכון שובל העכבר
-            for (let i = 0; i < trailArray.length; i++) {
-                trailArray[i].update();
-                trailArray[i].draw();
-                if (trailArray[i].size <= 0.2) {
-                    trailArray.splice(i, 1);
-                    i--;
-                }
-            }
-        }
-
-        init();
-        animate();
+        animateGlow();
     </script>
 </body>
 </html>
