@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>המתכנת במסכה | פרימיום 3D</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎭</text></svg>">
     <style>
@@ -23,7 +23,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -37,9 +37,10 @@
             justify-content: center;
             overflow-x: hidden;
             position: relative;
+            cursor: none; /* מסתיר עכבר במחשב */
         }
 
-        /* === תאורת העכבר === */
+        /* === תאורת אינטראקציה (עכבר / אצבע) === */
         #cursor-dot {
             position: fixed;
             width: 6px;
@@ -50,6 +51,7 @@
             z-index: 9999;
             box-shadow: 0 0 15px 2px var(--neon-yellow);
             transform: translate(-50%, -50%);
+            display: none; /* מוסתר עד שמזהים תנועה */
         }
 
         #cursor-aura {
@@ -63,7 +65,8 @@
             z-index: 9998;
             transform: translate(-50%, -50%);
             transition: width 0.2s, height 0.2s, background 0.2s;
-            mix-blend-mode: screen; /* משלב את האור עם הרקע בצורה ריאליסטית */
+            mix-blend-mode: screen;
+            display: none;
         }
 
         .container {
@@ -75,15 +78,16 @@
             gap: 60px;
             position: relative;
             z-index: 10;
-            perspective: 1200px; /* קריטי לאפקט ה-Tilt של הכרטיס */
+            perspective: 1200px;
         }
 
-        /* === 3D Elements === */
+        /* === אובייקטים תלת ממדיים === */
         .scene-3d {
             position: relative;
             width: 450px;
             height: 450px;
             flex-shrink: 0;
+            transition: transform 0.2s ease-out; /* לאפקט המגע בנייד */
         }
 
         .shape {
@@ -150,7 +154,7 @@
             100% { box-shadow: 0 0 35px var(--neon-yellow), inset 0 0 25px var(--neon-yellow); transform: rotateX(75deg) rotateZ(-15deg) scale(1.02); }
         }
 
-        /* === Glass Card === */
+        /* === הכרטיס המרכזי === */
         .content {
             flex: 1;
             max-width: 520px;
@@ -168,7 +172,7 @@
             border-radius: 28px;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
             transform: translateZ(0);
-            transition: transform 0.1s ease-out; /* חלקות באפקט ה-Tilt */
+            transition: transform 0.15s ease-out; /* חלקות באפקט המגע/עכבר */
         }
 
         h1 {
@@ -177,7 +181,7 @@
             margin: 0 0 15px 0;
             line-height: 1.05;
             letter-spacing: -1px;
-            transform: translateZ(30px); /* קופץ קדימה בתלת ממד */
+            transform: translateZ(30px);
         }
 
         h1 span {
@@ -228,7 +232,7 @@
             box-shadow: 0 12px 25px rgba(196, 104, 129, 0.25);
         }
 
-        .btn-business:hover {
+        .btn-business:hover, .btn-business:active {
             transform: translateY(-4px) scale(1.02);
             box-shadow: 0 20px 35px rgba(196, 104, 129, 0.4);
         }
@@ -240,28 +244,27 @@
             backdrop-filter: blur(5px);
         }
 
-        .btn-tip:hover {
+        .btn-tip:hover, .btn-tip:active {
             background: rgba(255, 204, 0, 0.15);
             border-color: var(--neon-yellow);
             transform: translateY(-4px) scale(1.02);
             box-shadow: 0 15px 30px rgba(255, 204, 0, 0.2);
         }
 
-        /* === Mobile & Tablet === */
+        /* === מובייל וטאבלט === */
         @media (max-width: 1024px) {
             .container { flex-direction: column-reverse; text-align: center; gap: 30px; padding-top: 40px; }
             .content { max-width: 100%; }
-            .scene-3d { width: 350px; height: 350px; transform: scale(0.8); }
+            .scene-3d { width: 350px; height: 350px; transform: scale(0.8); margin-bottom: 20px;}
         }
 
         @media (max-width: 768px) {
             body { cursor: auto; }
-            #cursor-dot, #cursor-aura { display: none; }
-            .glass-card { padding: 40px 25px; transform: none !important; transition: none; }
-            h1 { font-size: 2.5rem; transform: none; }
-            .pitch { font-size: 1.15rem; transform: none; }
-            .actions { transform: none; }
-            .scene-3d { width: 280px; height: 280px; transform: scale(0.6); margin-top: -40px; }
+            /* בנייד נאפשר תנועת אצבע שמשפיעה, לכן לא מעלימים את האלמנטים אלא משנים התנהגות ב-JS */
+            .glass-card { padding: 40px 25px; }
+            h1 { font-size: 2.5rem; }
+            .pitch { font-size: 1.15rem; }
+            .scene-3d { width: 280px; height: 280px; transform: scale(0.6); margin-top: -30px; margin-bottom: 0;}
             .btn { cursor: auto; }
         }
     </style>
@@ -281,83 +284,97 @@
 
         <div class="content">
             <div class="glass-card">
-                <h1>סרקתם?<br><span>זה עבד.</span></h1>
+                <h1>סרקתם את זה.<br><span>כמה צפוי, ככה יעיל.</span></h1>
                 
                 <p class="pitch">
-                    הגעתם לכאן כי סקרן אתכם הברקוד. משפך המכירות שלי עבד עליכם הרגע – <strong>וככה בדיוק יכול לעבוד גם האתר שלכם.</strong><br><br>
-                    רוצים להביא לקוחות בצורה חכמה? דברו איתי. סתם נהניתם מהבדיחה? תנו טיפ לחג.
-                </p>
+    ברכותיי. נכנעתם לדחף הבלתי נשלט לסרוק ברקוד אקראי על חולצה של אדם זר ברחוב. אני מניח שזו בדיוק רמת הסקרנות שאני מנצל כדי להביא טראפיק לאתרים שאני בונה.<br><br>
+    בניגוד להחלטות שאתם הולכים לקבל אחרי הכוס השלישית של העדלאידע, או לשידוכים המפוקפקים שמציעים לכם לאחרונה – <strong>הקוד שלי אשכרה יציב ולא קורס.</strong><br><br>
+    אם העסק שלכם זקוק לנוכחות דיגיטלית שלא תביך אתכם, תלחצו על הכפתור. אם סתם באתם לבזבז לי רוחב פס – המינימום הנימוסי דורש שתשאירו דמי פורים. השרתים שלי לא משלמים על עצמם.
+</p>
                 
                 <div class="actions">
-                    <a href="https://wa.me/972559297328?text=היי,%20סרקתי%20את%20החולצה.%20אני%20צריך%20אתר%20לעסק%20שלי." class="btn btn-business" target="_blank">בואו נדבר על האתר שלכם</a>
-                    <a href="https://paypal.me/YOUR_LINK" class="btn btn-tip" target="_blank">אהבתי, קח דמי פורים 🎭</a>
+                    <a href="https://wa.me/972559297328?text=היי,%20סרקתי%20את%20החולצה.%20אני%20צריך%20אתר%20לעסק%20שלי." class="btn btn-business" target="_blank">בואו נדבר על האתר שלכם (לפני שאתחרט)</a>
+
+<a href="https://paypal.me/YOUR_LINK" class="btn btn-tip" target="_blank">קחו דמי פורים (כדי להצדיק את האינטראקציה הזו) 🎭</a>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // בדיקת מכשיר מגע
-        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const dot = document.getElementById('cursor-dot');
+        const aura = document.getElementById('cursor-aura');
+        const card = document.querySelector('.glass-card');
+        const scene3d = document.querySelector('.scene-3d');
+        
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let auraX = mouseX;
+        let auraY = mouseY;
+        let isMobile = window.innerWidth <= 768;
 
-        if (!isTouchDevice) {
-            const dot = document.getElementById('cursor-dot');
-            const aura = document.getElementById('cursor-aura');
-            const card = document.querySelector('.glass-card');
+        // הפעלת מעקב במחשב וגם בגרירת אצבע בנייד
+        function handleMove(x, y) {
+            mouseX = x;
+            mouseY = y;
             
-            let mouseX = window.innerWidth / 2;
-            let mouseY = window.innerHeight / 2;
-            let auraX = mouseX;
-            let auraY = mouseY;
+            // מציג את התאורה ברגע שיש אינטראקציה
+            dot.style.display = 'block';
+            aura.style.display = 'block';
+            
+            dot.style.left = mouseX + 'px';
+            dot.style.top = mouseY + 'px';
 
-            // תנועת עכבר חלקה
-            window.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                
-                dot.style.left = mouseX + 'px';
-                dot.style.top = mouseY + 'px';
+            // חישוב לאפקט ה-Tilt של הכרטיס
+            let xAxis = (window.innerWidth / 2 - mouseX) / (isMobile ? 25 : 35);
+            let yAxis = (window.innerHeight / 2 - mouseY) / (isMobile ? -25 : -35);
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
 
-                // חישוב לאפקט ה-Tilt של הכרטיס (רק במחשב)
-                let xAxis = (window.innerWidth / 2 - mouseX) / 35;
-                let yAxis = (window.innerHeight / 2 - mouseY) / -35;
-                card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-            });
-
-            // איפוס הכרטיס כשהעכבר יוצא מהמסך
-            window.addEventListener('mouseout', () => {
-                card.style.transform = `rotateY(0deg) rotateX(0deg)`;
-            });
-
-            // אנימציית הילה נגררת
-            function animateAura() {
-                auraX += (mouseX - auraX) * 0.15;
-                auraY += (mouseY - auraY) * 0.15;
-                
-                aura.style.left = auraX + 'px';
-                aura.style.top = auraY + 'px';
-                
-                requestAnimationFrame(animateAura);
-            }
-            animateAura();
-
-            // אינטראקציית עכבר על הכפתורים
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach(btn => {
-                btn.addEventListener('mouseenter', () => {
-                    aura.style.width = '70px';
-                    aura.style.height = '70px';
-                    aura.style.background = 'radial-gradient(circle, rgba(255, 204, 0, 0.25) 0%, transparent 70%)';
-                    aura.style.borderColor = 'rgba(255, 204, 0, 0.6)';
-                });
-                btn.addEventListener('mouseleave', () => {
-                    aura.style.width = '50px';
-                    aura.style.height = '50px';
-                    aura.style.background = 'radial-gradient(circle, rgba(255, 204, 0, 0.15) 0%, transparent 70%)';
-                    aura.style.borderColor = 'rgba(255, 204, 0, 0.3)';
-                });
-            });
+            // אפקט פראלקס גם לצורות התלת ממדיות
+            let scaleAmount = isMobile ? 0.6 : 1;
+            scene3d.style.transform = `scale(${scaleAmount}) translate(${xAxis * -3}px, ${yAxis * 3}px)`;
         }
+
+        // מאזין תנועת עכבר (מחשב)
+        window.addEventListener('mousemove', (e) => {
+            handleMove(e.clientX, e.clientY);
+        });
+
+        // מאזין גרירת אצבע (נייד)
+        window.addEventListener('touchmove', (e) => {
+            handleMove(e.touches[0].clientX, e.touches[0].clientY);
+        });
+
+        // איפוס הכרטיס כשהאצבע עוזבת את המסך בנייד
+        window.addEventListener('touchend', () => {
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            scene3d.style.transform = `scale(${isMobile ? 0.6 : 1}) translate(0px, 0px)`;
+            dot.style.display = 'none';
+            aura.style.display = 'none';
+        });
+
+        // איפוס הכרטיס כשהעכבר יוצא מהחלון במחשב
+        window.addEventListener('mouseout', () => {
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            scene3d.style.transform = `scale(${isMobile ? 0.6 : 1}) translate(0px, 0px)`;
+        });
+
+        // מעקב הילה חלקה (Lerp)
+        function animateAura() {
+            auraX += (mouseX - auraX) * 0.15;
+            auraY += (mouseY - auraY) * 0.15;
+            
+            aura.style.left = auraX + 'px';
+            aura.style.top = auraY + 'px';
+            
+            requestAnimationFrame(animateAura);
+        }
+        animateAura();
+
+        // עדכון סטטוס מובייל בשינוי גודל מסך
+        window.addEventListener('resize', () => {
+            isMobile = window.innerWidth <= 768;
+        });
     </script>
 </body>
 </html>
