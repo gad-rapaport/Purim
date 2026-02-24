@@ -9,7 +9,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700;800&display=swap');
 
         :root {
-            /* הצבעים המדויקים מהרפרנס של Carbonmade */
             --bg-plum: #2f1b3a;
             --bg-darker: #1a0f24;
             --rose-gold-light: #e89eb3;
@@ -24,12 +23,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; /* מעלים את העכבר הרגיל כדי לשים את המעוצב שלנו */
+            cursor: none;
         }
 
         body {
             background-color: var(--bg-plum);
-            background-image: radial-gradient(circle at 60% 40%, #3e244d 0%, var(--bg-plum) 50%, var(--bg-darker) 100%);
+            background-image: radial-gradient(circle at 70% 30%, #4a2858 0%, var(--bg-plum) 45%, var(--bg-darker) 100%);
             font-family: 'Assistant', sans-serif;
             color: var(--text-main);
             min-height: 100vh;
@@ -40,149 +39,150 @@
             position: relative;
         }
 
-        /* === אנימציית העכבר (Cursor Tracker) === */
+        /* === תאורת העכבר === */
         #cursor-dot {
             position: fixed;
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background-color: var(--neon-yellow);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            box-shadow: 0 0 10px var(--neon-yellow);
+            box-shadow: 0 0 15px 2px var(--neon-yellow);
             transform: translate(-50%, -50%);
         }
 
         #cursor-aura {
             position: fixed;
-            width: 40px;
-            height: 40px;
-            border: 2px solid rgba(255, 204, 0, 0.4);
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, rgba(255, 204, 0, 0.15) 0%, transparent 70%);
+            border: 1px solid rgba(255, 204, 0, 0.3);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9998;
             transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-            box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+            transition: width 0.2s, height 0.2s, background 0.2s;
+            mix-blend-mode: screen; /* משלב את האור עם הרקע בצורה ריאליסטית */
         }
 
-        /* === פריסת האתר (רספונסיביות) === */
         .container {
             width: 90%;
-            max-width: 1200px;
+            max-width: 1150px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 50px;
+            gap: 60px;
             position: relative;
             z-index: 10;
+            perspective: 1200px; /* קריטי לאפקט ה-Tilt של הכרטיס */
         }
 
-        /* === אזור ה-3D משמאל (כמו בתמונה) === */
+        /* === 3D Elements === */
         .scene-3d {
             position: relative;
-            width: 500px;
-            height: 500px;
+            width: 450px;
+            height: 450px;
             flex-shrink: 0;
         }
 
-        /* יצירת הצורות המטאליות ב-CSS */
         .shape {
             position: absolute;
-            box-shadow: 20px 30px 40px rgba(0,0,0,0.5);
             animation: float 6s ease-in-out infinite alternate;
         }
 
-        /* כדור רוז-גולד גדול */
         .sphere-main {
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
-            top: 20%;
-            left: 30%;
-            background: radial-gradient(circle at 35% 25%, #ffe0e9 0%, var(--rose-gold-mid) 40%, var(--rose-gold-dark) 85%, #2a0b16 100%);
+            top: 15%;
+            left: 25%;
+            background: radial-gradient(circle at 30% 30%, #fff 0%, #ffe0e9 10%, var(--rose-gold-mid) 45%, var(--rose-gold-dark) 80%, #1a0f24 100%);
+            box-shadow: 25px 35px 50px rgba(0,0,0,0.6), inset -20px -20px 40px rgba(0,0,0,0.5);
             z-index: 3;
         }
 
-        /* צילינדר מתכתי (המדרגות מהתמונה) */
         .cylinder {
-            width: 140px;
-            height: 180px;
-            border-radius: 20px;
-            bottom: 10%;
-            left: 10%;
-            background: linear-gradient(to right, var(--rose-gold-dark) 0%, var(--rose-gold-mid) 20%, #ffe0e9 50%, var(--rose-gold-mid) 80%, var(--rose-gold-dark) 100%);
+            width: 150px;
+            height: 190px;
+            border-radius: 25px;
+            bottom: 5%;
+            left: 5%;
+            background: linear-gradient(135deg, var(--rose-gold-dark) 0%, var(--rose-gold-mid) 30%, #ffe0e9 50%, var(--rose-gold-mid) 70%, var(--rose-gold-dark) 100%);
+            box-shadow: 20px 30px 40px rgba(0,0,0,0.5), inset 10px 10px 20px rgba(255,255,255,0.4);
             z-index: 2;
             animation-delay: -2s;
         }
 
-        /* טבעת הניאון הצהובה */
         .neon-ring {
             position: absolute;
-            width: 260px;
+            width: 300px;
             height: 80px;
-            border: 4px solid var(--neon-yellow);
+            border: 3px solid var(--neon-yellow);
             border-radius: 50%;
-            top: 60%;
-            left: 20%;
-            transform: rotateX(70deg) rotateZ(-20deg);
-            box-shadow: 
-                0 0 20px var(--neon-yellow),
-                inset 0 0 20px var(--neon-yellow);
+            top: 55%;
+            left: 15%;
+            transform: rotateX(75deg) rotateZ(-15deg);
+            box-shadow: 0 0 25px var(--neon-yellow), inset 0 0 15px var(--neon-yellow);
             z-index: 4;
-            animation: pulse-ring 3s infinite alternate;
+            animation: pulse-ring 4s infinite alternate ease-in-out;
         }
 
-        /* כדור קטן */
         .sphere-small {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            bottom: 30%;
-            right: 15%;
-            background: radial-gradient(circle at 30% 30%, #ffe0e9 0%, var(--rose-gold-mid) 50%, var(--rose-gold-dark) 90%);
+            bottom: 25%;
+            right: 10%;
+            background: radial-gradient(circle at 30% 30%, #ffe0e9 0%, var(--rose-gold-mid) 40%, var(--rose-gold-dark) 85%);
+            box-shadow: 15px 20px 30px rgba(0,0,0,0.5);
             z-index: 5;
-            animation-delay: -4s;
+            animation-delay: -3.5s;
         }
 
         @keyframes float {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-20px); }
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-25px) rotate(2deg); }
         }
 
         @keyframes pulse-ring {
-            0% { box-shadow: 0 0 15px var(--neon-yellow), inset 0 0 15px var(--neon-yellow); opacity: 0.8; }
-            100% { box-shadow: 0 0 35px var(--neon-yellow), inset 0 0 25px var(--neon-yellow); opacity: 1; }
+            0% { box-shadow: 0 0 15px var(--neon-yellow), inset 0 0 10px var(--neon-yellow); transform: rotateX(75deg) rotateZ(-15deg) scale(0.98); }
+            100% { box-shadow: 0 0 35px var(--neon-yellow), inset 0 0 25px var(--neon-yellow); transform: rotateX(75deg) rotateZ(-15deg) scale(1.02); }
         }
 
-        /* === אזור הטקסט והמכירה (צד ימין) === */
+        /* === Glass Card === */
         .content {
             flex: 1;
-            max-width: 550px;
+            max-width: 520px;
+            transform-style: preserve-3d;
         }
 
         .glass-card {
-            background: rgba(26, 15, 36, 0.4);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-top: 1px solid rgba(232, 158, 179, 0.3); /* קו רוז גולד עדין */
-            padding: 50px 40px;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            background: rgba(30, 18, 40, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-top: 1px solid rgba(232, 158, 179, 0.4);
+            border-left: 1px solid rgba(232, 158, 179, 0.2);
+            padding: 55px 45px;
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            transform: translateZ(0);
+            transition: transform 0.1s ease-out; /* חלקות באפקט ה-Tilt */
         }
 
         h1 {
-            font-size: 3.5rem;
+            font-size: 3.6rem;
             font-weight: 800;
             margin: 0 0 15px 0;
-            line-height: 1.1;
+            line-height: 1.05;
             letter-spacing: -1px;
+            transform: translateZ(30px); /* קופץ קדימה בתלת ממד */
         }
 
         h1 span {
             color: var(--neon-yellow);
-            text-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+            text-shadow: 0 0 25px rgba(255, 204, 0, 0.25);
         }
 
         .pitch {
@@ -191,6 +191,7 @@
             color: var(--text-muted);
             margin-bottom: 40px;
             font-weight: 300;
+            transform: translateZ(20px);
         }
 
         .pitch strong {
@@ -198,11 +199,11 @@
             font-weight: 700;
         }
 
-        /* כפתורים מטורפים */
         .actions {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 16px;
+            transform: translateZ(25px);
         }
 
         .btn {
@@ -211,86 +212,57 @@
             justify-content: center;
             width: 100%;
             padding: 18px;
-            border-radius: 12px;
+            border-radius: 14px;
             text-decoration: none;
             font-size: 1.2rem;
             font-weight: 700;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
-            overflow: hidden;
             border: none;
+            cursor: none;
         }
 
-        /* כפתור למכירת האתר - סגנון רוז גולד */
         .btn-business {
             background: linear-gradient(135deg, var(--rose-gold-mid), #96425c);
             color: #ffffff;
-            box-shadow: 0 10px 20px rgba(196, 104, 129, 0.3);
+            box-shadow: 0 12px 25px rgba(196, 104, 129, 0.25);
         }
 
         .btn-business:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(196, 104, 129, 0.5);
-            /* כשהעכבר עליו, ההילה משתנה */
-            cursor: none;
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 35px rgba(196, 104, 129, 0.4);
         }
 
-        /* כפתור טיפ - שקוף עם מסגרת צהובה */
         .btn-tip {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.03);
             color: var(--neon-yellow);
-            border: 2px solid var(--neon-yellow);
+            border: 2px solid rgba(255, 204, 0, 0.6);
+            backdrop-filter: blur(5px);
         }
 
         .btn-tip:hover {
-            background: rgba(255, 204, 0, 0.1);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255, 204, 0, 0.2);
-            cursor: none;
+            background: rgba(255, 204, 0, 0.15);
+            border-color: var(--neon-yellow);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(255, 204, 0, 0.2);
         }
 
-        /* === רספונסיביות (Media Queries) === */
-
-        /* טאבלטים (Tablet) */
+        /* === Mobile & Tablet === */
         @media (max-width: 1024px) {
-            .container {
-                flex-direction: column-reverse; /* טקסט למעלה, 3D למטה */
-                text-align: center;
-                gap: 20px;
-                padding-top: 50px;
-            }
-            
+            .container { flex-direction: column-reverse; text-align: center; gap: 30px; padding-top: 40px; }
             .content { max-width: 100%; }
-            .glass-card { padding: 40px; }
-            h1 { font-size: 3rem; }
-            
-            .scene-3d {
-                width: 400px;
-                height: 400px;
-                transform: scale(0.8);
-            }
+            .scene-3d { width: 350px; height: 350px; transform: scale(0.8); }
         }
 
-        /* פלאפונים (Mobile) */
         @media (max-width: 768px) {
-            body { cursor: auto; } /* מחזיר עכבר רגיל בנייד/מגע */
-            #cursor-dot, #cursor-aura { display: none; } /* מעלים עוקב בנייד */
-            
-            .container { padding-top: 30px; }
-            .glass-card { padding: 30px 20px; border-radius: 16px; }
-            
-            h1 { font-size: 2.3rem; }
-            .pitch { font-size: 1.1rem; margin-bottom: 30px; }
-            
-            .btn { padding: 15px; font-size: 1.1rem; }
-            
-            /* מקטין את ה-3D משמעותית כדי שלא יפריע לגלילה בנייד */
-            .scene-3d {
-                width: 300px;
-                height: 300px;
-                transform: scale(0.6);
-                margin-top: -30px;
-            }
+            body { cursor: auto; }
+            #cursor-dot, #cursor-aura { display: none; }
+            .glass-card { padding: 40px 25px; transform: none !important; transition: none; }
+            h1 { font-size: 2.5rem; transform: none; }
+            .pitch { font-size: 1.15rem; transform: none; }
+            .actions { transform: none; }
+            .scene-3d { width: 280px; height: 280px; transform: scale(0.6); margin-top: -40px; }
+            .btn { cursor: auto; }
         }
     </style>
 </head>
@@ -325,32 +297,41 @@
     </div>
 
     <script>
-        // קוד ה-JavaScript לאנימציית העכבר (עובד רק במחשבים/מסכים לא מגע)
-        const dot = document.getElementById('cursor-dot');
-        const aura = document.getElementById('cursor-aura');
-        
-        // משתנים למעקב חלק של ההילה (Lerp)
-        let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-        let auraX = mouseX;
-        let auraY = mouseY;
-
-        // בודק אם זה מכשיר מגע (כדי לא להפעיל סתם)
+        // בדיקת מכשיר מגע
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
         if (!isTouchDevice) {
+            const dot = document.getElementById('cursor-dot');
+            const aura = document.getElementById('cursor-aura');
+            const card = document.querySelector('.glass-card');
+            
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let auraX = mouseX;
+            let auraY = mouseY;
+
+            // תנועת עכבר חלקה
             window.addEventListener('mousemove', (e) => {
                 mouseX = e.clientX;
                 mouseY = e.clientY;
                 
-                // הנקודה זזה מיידית
                 dot.style.left = mouseX + 'px';
                 dot.style.top = mouseY + 'px';
+
+                // חישוב לאפקט ה-Tilt של הכרטיס (רק במחשב)
+                let xAxis = (window.innerWidth / 2 - mouseX) / 35;
+                let yAxis = (window.innerHeight / 2 - mouseY) / -35;
+                card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
             });
 
-            // אנימציה חלקה (60FPS) להילה שנגררת מאחור
+            // איפוס הכרטיס כשהעכבר יוצא מהמסך
+            window.addEventListener('mouseout', () => {
+                card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            });
+
+            // אנימציית הילה נגררת
             function animateAura() {
-                auraX += (mouseX - auraX) * 0.15; // מהירות הגרירה
+                auraX += (mouseX - auraX) * 0.15;
                 auraY += (mouseY - auraY) * 0.15;
                 
                 aura.style.left = auraX + 'px';
@@ -360,18 +341,20 @@
             }
             animateAura();
 
-            // אפקט כשהעכבר מעל הכפתורים
+            // אינטראקציית עכבר על הכפתורים
             const buttons = document.querySelectorAll('.btn');
             buttons.forEach(btn => {
                 btn.addEventListener('mouseenter', () => {
-                    aura.style.width = '60px';
-                    aura.style.height = '60px';
-                    aura.style.backgroundColor = 'rgba(255, 204, 0, 0.1)';
+                    aura.style.width = '70px';
+                    aura.style.height = '70px';
+                    aura.style.background = 'radial-gradient(circle, rgba(255, 204, 0, 0.25) 0%, transparent 70%)';
+                    aura.style.borderColor = 'rgba(255, 204, 0, 0.6)';
                 });
                 btn.addEventListener('mouseleave', () => {
-                    aura.style.width = '40px';
-                    aura.style.height = '40px';
-                    aura.style.backgroundColor = 'transparent';
+                    aura.style.width = '50px';
+                    aura.style.height = '50px';
+                    aura.style.background = 'radial-gradient(circle, rgba(255, 204, 0, 0.15) 0%, transparent 70%)';
+                    aura.style.borderColor = 'rgba(255, 204, 0, 0.3)';
                 });
             });
         }
